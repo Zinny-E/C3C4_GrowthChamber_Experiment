@@ -1,4 +1,4 @@
 # C3C4_Growth Chamber Experiment
-Repository for  growth chamber experiment on photosynthetic acclimation of C3C4 species to elevated CO2 and temperature.
+Repository for CO2 by temperature experiment looking at the photosynthetic acclimation difference in C3/C4 grass species. Testing different leaf stomatal and biochemical optimality model for C3 and C4 plants.
 
-Species to be used - Elymus
+
