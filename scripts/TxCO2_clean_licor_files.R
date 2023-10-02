@@ -662,12 +662,9 @@ write.csv(co2_resp_chamber_5, "../licor_cleaned/datasheets/TXCO2_co2_resp_chambe
 # time consuming. Reloading files into list of data frames, then merging through
 # reshape::merge_all() seems to do the trick.
 
-## Load temp_standardize fxn
-## Not standardizing temp 
-#source("/Users/eaperkowski/git/r_functions/temp_standardize.R")
 
 # List files
-file.list.rd <- list.files("../licor_cleaned/rd",
+file.list.rd <- list.files("../licor_cleaned/chamber_2/dark_resp",
                         recursive = TRUE,
                         pattern = "\\.csv$",
                         full.names = TRUE)
@@ -678,38 +675,24 @@ file.list.rd <- setNames(file.list.rd, stringr::str_extract(basename(file.list.r
 rd <- lapply(file.list.rd, read.csv) %>%
   reshape::merge_all()
 
-rd.wk6 <- rd %>%
-  filter(week == 6) %>%
-  group_by(id, week) %>%
+rd.chamber_4 <- rd %>%
+  filter(chamber == 4) %>%
+  group_by(id, chamber) %>%
   mutate(A = ifelse(A > 0, NA, A),
          rd = abs(A)) %>%
-  summarize(rd = mean(rd, na.rm = TRUE),
-            tLeaf = mean(Tleaf, na.rm = TRUE),
-            rd25 = temp_standardize(rd,
-                                    estimate.type = "Rd",
-                                    standard.to = 25,
-                                    tLeaf = tLeaf,
-                                    tGrow = 22.5,
-                                    pft = "C3H")) %>%
+  select(id,rd,Tleaf,machine,chamber) %>%
   arrange(id)
-write.csv(rd.wk6, "../data_sheets/NxCO2_rd_wk6.csv", row.names = FALSE)
 
-rd.wk7 <- rd %>%
-  filter(week == 7) %>%
-  group_by(id, week) %>%
+write.csv(rd.chamber_4, "../licor_cleaned/datasheets/TxCO2_rd_chamber_4.csv", row.names = FALSE)
+
+rd.chamber_2 <- rd %>%
+  filter(chamber == 2) %>%
+  group_by(id, chamber) %>%
   mutate(A = ifelse(A > 0, NA, A),
          rd = abs(A)) %>%
-  summarize(rd = mean(rd, na.rm = TRUE),
-            tLeaf = mean(Tleaf, na.rm = TRUE),
-            rd25 = temp_standardize(rd,
-                                    estimate.type = "Rd",
-                                    standard.to = 25,
-                                    tLeaf = tLeaf,
-                                    tGrow = 22.5,
-                                    pft = "C3H")) %>%
-  filter(id != "a_y_280_133") # Remove first iteration of rd; co2 cylinder ran out
-rd.wk7$id[rd.wk7$id == "a_y_280_133_b"] <- "a_y_280_133"
+  select(id,rd,Tleaf,machine,chamber) %>%
+  arrange(id)
 
-write.csv(rd.wk7, "../data_sheets/NxCO2_rd_wk7.csv", row.names = FALSE)
+write.csv(rd.chamber_2, "../licor_cleaned/datasheets/TxCO2_rd_chamber_2.csv", row.names = FALSE)
 
 ## End of data cleaning, ready for curve fitting ##

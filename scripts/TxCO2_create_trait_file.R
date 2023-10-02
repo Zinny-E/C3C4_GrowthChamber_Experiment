@@ -11,8 +11,8 @@ library(emmeans)
 ###############################################################################
 ## Import files
 ###############################################################################
-biomass_area <- read.csv("../data_sheets/NxCO2_tla_biomass_data.csv")
-id <- read.csv("../data_sheets/NxCO2_id_datasheet.csv")
+#biomass_area <- read.csv("../data_sheets/NxCO2_tla_biomass_data.csv")
+#id <- read.csv("../data_sheets/NxCO2_id_datasheet.csv")
 photo <- read.csv("../data_sheets/NxCO2_photo_data.csv")
 photo.wk6 <- read.csv("../data_sheets/NxCO2_photo_data_wk6.csv")
 isotopes <- read.csv("../data_sheets/NxCO2xI_isotope_data.csv")
@@ -69,7 +69,7 @@ chlor.df <- id %>%
   dplyr::select(id, abs.649, abs.665)
 
 ## Calculate leaf disk area
-ij.path <- "/Applications/ImageJ.app"
+ij.path <- "/Users/zinny/Desktop/ImageJ.app/"
 imagepath.disk <- "/Users/eaperkowski/git/2022_NxCO2xI/leaf_area/chl_disk_scans/"
 imagepath.chlLeaf <- "/Users/eaperkowski/git/2022_NxCO2xI/leaf_area/chl_leaf_scans/"
 
@@ -136,11 +136,11 @@ cn.data <- lapply(cn.files, read.csv) %>% reshape::merge_all() %>%
   pivot_wider(names_from = organ, values_from = nmass:cmass, names_sep = ".")
 
 ## Calculate leaf disk area
-imagepath.focal <- "/Users/eaperkowski/git/2022_NxCO2xI/leaf_area/focal_scans/"
+imagepath.focal <- "/Users/zinny/git/C3C4_GrowthChamber_Experiment/leaf_area/"
 
 focal.area <- run.ij(path.imagej = ij.path,
                      set.directory = imagepath.focal,
-                     distance.pixel = 117.9034,
+                     distance.pixel = 126,
                      known.distance = 1, low.size = 0.05,
                      set.memory = 30)
 
