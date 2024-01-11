@@ -20,6 +20,7 @@ eco2_HT_ch4d1_alb <- licorData(location = "../licor_raw/Zinny_GC_Albert/2023-03-
   mutate(chamber = 4)
 #  write.csv(eco2_HT_ch4d1_alb, "../licor_cleaned/chamber_4/eco2_HT_ch4D1_alb.csv", row.names = FALSE)
 
+
 eco2_HT_ch4d2_alb <- licorData(location = "../licor_raw/Zinny_GC_Albert/2023-03-03-1017_chamber4_day2") %>%
   mutate(chamber = 4)
 # write.csv(eco2_HT_ch4d2_alb, "../licor_cleaned/chamber_4/eco2_HT_ch4D2_alb.csv", row.names = FALSE)
@@ -93,8 +94,8 @@ aco2_LT_ch2d2_alb <- licorData(location = "../licor_raw/Zinny_GC_Albert/2023-03-
  eco2_HT_ch4d1_stan <- licorData(location = "../licor_raw/Zinny_GC_Stan/2023-03-02-1141_chamber4") %>%
    mutate(chamber = 4)
  # write.csv(eco2_HT_ch4d1_stan, "../licor_cleaned/chamber_4/eco2_HT_ch4D1_stan.csv", row.names = FALSE)
-
- eco2_HT_ch4d2_stan <- licorData(location = "../licor_raw/Zinny_GC_Stan/2023-03-02-1728_chamber4_dr2") %>%
+ 
+ eco2_HT_ch4d2_stan <- licorData(location = "../licor_raw/Zinny_GC_Stan/2023-03-03-1013_chamber4_day2") %>%
    mutate(chamber = 4)
  # write.csv(eco2_HT_ch4d2_stan, "../licor_cleaned/chamber_4/eco2_HT_ch4D2_stan.csv", row.names = FALSE)
 
@@ -164,21 +165,49 @@ aco2_LT_ch2d2_alb <- licorData(location = "../licor_raw/Zinny_GC_Albert/2023-03-
    mutate(chamber = 4)
  # write.csv(eco2_HT_ch4d1_ozzie, "../licor_cleaned/chamber_4/eco2_HT_ch4D1_ozzie.csv", row.names = FALSE)
  
- eco2_HT_ch4d2_ozzie <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-03-1022_chamber4_day2") %>%
+ eco2_HT_ch4d1.1_ozzie <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-02-1454_chamber4") %>%
+   mutate(chamber = 4)
+ # write.csv(eco2_HT_ch4d1.1_ozzie, "../licor_cleaned/chamber_4/eco2_HT_ch4D1.1_ozzie.csv", row.names = FALSE)
+ 
+ eco2_HT_ch4d2_ozzie <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-03-1021_chamber4_day2") %>%
    mutate(chamber = 4)
  # write.csv(eco2_HT_ch4d2_ozzie, "../licor_cleaned/chamber_4/eco2_HT_ch4D2_ozzie.csv", row.names = FALSE)
+
+ eco2_HT_ch4d2.1_ozzie <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-03-1022_chamber4_day2") %>%
+   mutate(chamber = 4)
+ # write.csv(eco2_HT_ch4d2.1_ozzie, "../licor_cleaned/chamber_4/eco2_HT_ch4D2.1_ozzie.csv", row.names = FALSE)
  
- eco2_HT_ch3d4_ozzie <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-08-1128_chamber3_day4") %>%
-   mutate(chamber = 3)
- # write.csv(eco2_HT_ch3d4_ozzie, "../licor_cleaned/chamber_3/eco2_HT_ch3D4_ozzie.csv", row.names = FALSE)
+ eco2_HT_ch4d3_ozzie <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-06-1031_chamber4_day3") %>%
+   mutate(chamber = 4)
+ # write.csv(eco2_HT_ch4d3_ozzie, "../licor_cleaned/chamber_4/eco2_HT_ch4D3_ozzie.csv", row.names = FALSE)
  
- eco2_HT_ch3d5_ozzie <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-10-1008_chamber3_day5") %>%
+ aco2_HT_ch3d4_ozzie <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-08-0954_chamber3_day4") %>%
    mutate(chamber = 3)
- # write.csv(eco2_HT_ch3d5_ozzie, "../licor_cleaned/chamber_3/eco2_HT_ch3D5_ozzie.csv", row.names = FALSE)
+ # write.csv(aco2_HT_ch3d4_ozzie, "../licor_cleaned/chamber_3/aco2_HT_ch3D4_ozzie.csv", row.names = FALSE)
  
- eco2_HT_ch3d6_ozzie <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-14-1044_chamber3_day6") %>%
+ aco2_HT_ch3d4.1_ozzie <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-08-1128_chamber3_day4") %>%
    mutate(chamber = 3)
- # write.csv(eco2_HT_ch3d6_ozzie, "../licor_cleaned/chamber_3/eco2_HT_ch3D6_ozzie.csv", row.names = FALSE)
+ # write.csv(aco2_HT_ch3d4.1_ozzie, "../licor_cleaned/chamber_3/aco2_HT_ch3D4.1_ozzie.csv", row.names = FALSE)
+ 
+ aco2_HT_ch3d4.2_ozzie <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-08-1326_chamber3_day4_") %>%
+   mutate(chamber = 3)
+ # write.csv(aco2_HT_ch3d4.2_ozzie, "../licor_cleaned/chamber_3/aco2_HT_ch3D4.2_ozzie.csv", row.names = FALSE)
+ 
+ aco2_HT_ch3d5_ozzie <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-10-1008_chamber3_day5") %>%
+   mutate(chamber = 3)
+ # write.csv(aco2_HT_ch3d5_ozzie, "../licor_cleaned/chamber_3/aco2_HT_ch3D5_ozzie.csv", row.names = FALSE)
+ 
+ aco2_HT_ch3d5.1_ozzie <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-10-1013_chamber3_day5") %>%
+   mutate(chamber = 3)
+ # write.csv(aco2_HT_ch3d5.1_ozzie, "../licor_cleaned/chamber_3/aco2_HT_ch3D5.1_ozzie.csv", row.names = FALSE)
+ 
+ aco2_HT_ch3d6_ozzie <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-14-1043_chamber3_day6") %>%
+   mutate(chamber = 3)
+ # write.csv(aco2_HT_ch3d6_ozzie, "../licor_cleaned/chamber_3/aco2_HT_ch3D6_ozzie.csv", row.names = FALSE)
+ 
+ aco2_HT_ch3d6.1_ozzie <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-14-1044_chamber3_day6") %>%
+   mutate(chamber = 3)
+ # write.csv(aco2_HT_ch3d6.1_ozzie, "../licor_cleaned/chamber_3/aco2_HT_ch3D6.1_ozzie.csv", row.names = FALSE)
  
  eco2_LT_ch5d1_ozzie <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-21-1212_chamber5_d1") %>%
    mutate(chamber = 5)
@@ -411,9 +440,13 @@ eco2_rd_ch4d1_stan <- licorData(location = "../licor_raw/Zinny_GC_Stan/2023-03-0
   mutate(chamber = 4)
 # write.csv(eco2_rd_ch4d1_stan, "../licor_cleaned/chamber_4/dark_resp/eco2_rd_ch4d1_stan.csv", row.names = FALSE)
 
-eco2_rd_ch4d2_2_stan <- licorData(location = "../licor_raw/Zinny_GC_Stan/2023-03-03-1507_chamber4_dr_day2") %>%
+eco2_rd_ch4d1.1_stan <- licorData(location = "../licor_raw/Zinny_GC_Stan/2023-03-02-1728_chamber4_dr2") %>%
   mutate(chamber = 4)
-# write.csv(eco2_rd_ch4d2_2_stan, "../licor_cleaned/chamber_4/dark_resp/eco2_rd_ch4d2_2_stan.csv", row.names = FALSE)
+# write.csv(eco2_rd_ch4d1.1_stan, "../licor_cleaned/chamber_4/dark_resp/eco2_rd_ch4d1.1_stan.csv", row.names = FALSE)
+
+eco2_rd_ch4d2_stan <- licorData(location = "../licor_raw/Zinny_GC_Stan/2023-03-03-1507_chamber4_dr_day2") %>%
+  mutate(chamber = 4)
+# write.csv(eco2_rd_ch4d2_stan, "../licor_cleaned/chamber_4/dark_resp/eco2_rd_ch4d2_stan.csv", row.names = FALSE)
 
 aco2_rd_ch3d5_stan <- licorData(location = "../licor_raw/Zinny_GC_Stan/2023-03-10-1502_chamber3_dr_day5") %>%
   mutate(chamber = 3)
@@ -485,25 +518,31 @@ eco2_rd_ch4d2_2_ozz <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2
   mutate(chamber = 4)
 # write.csv(eco2_rd_ch4d2_2_ozz, "../licor_cleaned/chamber_4/dark_resp/eco2_rd_ch4d2_2_ozz.csv", row.names = FALSE)
 
-eco2_rd_ch4d2_ozz <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-03-1507_chamber4_dr_day2") %>%
-  mutate(chamber = 4)
-# write.csv(eco2_rd_ch4d2_ozz, "../licor_cleaned/chamber_4/dark_resp/eco2_rd_ch4d2_ozz.csv", row.names = FALSE)
 
 eco2_rd_ch4d3_ozz <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-06-1551_chamber4_dr_day3") %>%
   mutate(chamber = 4)
 # write.csv(eco2_rd_ch4d3_ozz, "../licor_cleaned/chamber_4/dark_resp/eco2_rd_ch4d3_ozz.csv", row.names = FALSE)
 
-aco2_rd_ch3d4_4_ozz <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-08-1606_chamber3_dr_day4") %>%
+
+aco2_rd_ch3d4_ozz <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-08-1606_chamber3_dr_day4") %>%
   mutate(chamber = 3)
-# write.csv(aco2_rd_ch3d4_4_ozz, "../licor_cleaned/chamber_3/dark_resp/aco2_rd_ch3d4_4_ozz.csv", row.names = FALSE) 
+# write.csv(aco2_rd_ch3d4_ozz, "../licor_cleaned/chamber_3/dark_resp/aco2_rd_ch3d4_ozz.csv", row.names = FALSE) 
+
+aco2_rd_ch3d5_ozz <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-10-1504_chamber3_dr_day5") %>%
+  mutate(chamber = 3)
+# write.csv(aco2_rd_ch3d5_ozz, "../licor_cleaned/chamber_3/dark_resp/aco2_rd_ch3d5_ozz.csv", row.names = FALSE) 
 
 aco2_rd_ch3d5_2_ozz <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-10-1507_chamber3_dr_day5") %>%
   mutate(chamber = 3)
 # write.csv(aco2_rd_ch3d5_2_ozz, "../licor_cleaned/chamber_3/dark_resp/aco2_rd_ch3d5_2_ozz.csv", row.names = FALSE) 
 
-aco2_rd_ch3d6_2_ozz <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-14-1514_chamber3_dr_day6") %>%
+aco2_rd_ch3d6_ozz <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-14-1513_chamber3_dr_day6") %>%
   mutate(chamber = 3)
-# write.csv(aco2_rd_ch3d6_2_ozz, "../licor_cleaned/chamber_3/dark_resp/aco2_rd_ch3d6_2_ozz.csv", row.names = FALSE)
+# write.csv(aco2_rd_ch3d6_ozz, "../licor_cleaned/chamber_3/dark_resp/aco2_rd_ch3d6_ozz.csv", row.names = FALSE)
+
+aco2_rd_ch3d6.1_ozz <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-14-1514_chamber3_dr_day6") %>%
+  mutate(chamber = 3)
+# write.csv(aco2_rd_ch3d6.1_ozz, "../licor_cleaned/chamber_3/dark_resp/aco2_rd_ch3d6.1_ozz.csv", row.names = FALSE)
 
 eco2_rd_ch5d1_1_ozz <- licorData(location = "../licor_raw/Zinny_GC_OzzieGibson/2023-03-21-2041_chamber5_d1_dr") %>%
   mutate(chamber = 5)
@@ -623,29 +662,29 @@ aco2_rd_ch2d8_new <- licorData(location = "../licor_raw/Zinny_GC_New/2023-04-05-
 # reshape::merge_all() seems to do the trick.
 
 # List files
-file.list <- list.files("../licor_cleaned/chamber_2",
+file.list <- list.files("../licor_cleaned/chamber_4",
                         recursive = TRUE,
                         pattern = "\\.csv$",
                         full.names = TRUE)
 file.list <- setNames(file.list, stringr::str_extract(basename(file.list), 
                                                       '.*(?=\\.csv)'))
 
-# Merge list of data frames, arrange by marchine, measurement type, id, and time elapsed
+# Merge list of data frames, arrange by machine, measurement type, id, and time elapsed
 merged_curves <- lapply(file.list, read.csv) %>%
   reshape::merge_all() %>%
   arrange(machine, chamber, id, elapsed)
 
 co2_resp_chamber_2 <- merged_curves %>%
   filter(chamber == 2)
-write.csv(co2_resp_chamber_2, "../licor_cleaned/datasheets/TXCO2_co2_resp_chamber_2.csv", row.names = FALSE)
+write.csv(co2_resp_chamber_2, "../licor_cleaned/TxCO2_combined_datasheets/TXCO2_co2_resp_chamber_2.csv", row.names = FALSE)
 
 co2_resp_chamber_3 <- merged_curves %>%
   filter(chamber == 3)
-write.csv(co2_resp_chamber_3, "../licor_cleaned/datasheets/TXCO2_co2_resp_chamber_3.csv", row.names = FALSE)
+write.csv(co2_resp_chamber_3, "../licor_cleaned/TxCO2_combined_datasheets/TXCO2_co2_resp_chamber_3.csv", row.names = FALSE)
 
 co2_resp_chamber_4 <- merged_curves %>%
   filter(chamber == 4)
-write.csv(co2_resp_chamber_4, "../licor_cleaned/datasheets/TXCO2_co2_resp_chamber_4.csv", row.names = FALSE)
+write.csv(co2_resp_chamber_4, "../licor_cleaned/TxCO2_combined_datasheets/TXCO2_co2_resp_chamber_4.csv", row.names = FALSE)
 
 co2_resp_chamber_5 <- merged_curves %>%
   filter(chamber == 5)
@@ -664,7 +703,7 @@ write.csv(co2_resp_chamber_5, "../licor_cleaned/datasheets/TXCO2_co2_resp_chambe
 
 
 # List files
-file.list.rd <- list.files("../licor_cleaned/chamber_2/dark_resp",
+file.list.rd <- list.files("../licor_cleaned/chamber_4/dark_resp",
                         recursive = TRUE,
                         pattern = "\\.csv$",
                         full.names = TRUE)
@@ -683,7 +722,7 @@ rd.chamber_4 <- rd %>%
   select(id,rd,Tleaf,machine,chamber) %>%
   arrange(id)
 
-write.csv(rd.chamber_4, "../licor_cleaned/datasheets/TxCO2_rd_chamber_4.csv", row.names = FALSE)
+write.csv(rd.chamber_4, "../licor_cleaned/TxCO2_combined_datasheets/TxCO2_rd_chamber_4.csv", row.names = FALSE)
 
 rd.chamber_2 <- rd %>%
   filter(chamber == 2) %>%

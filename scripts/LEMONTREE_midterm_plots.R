@@ -29,7 +29,7 @@ df.total <- df.c3.420 %>% full_join(df.c3.1000) %>% full_join(df.c4.420) %>%
 ac.plot <- ggplot(data = df.total, 
                   aes(x = tg_c, y = Ac, color = pathway, linetype = factor(cao))) +
   geom_line(size = 2) +
-  scale_color_manual(values = c("red", "blue")) +  # Specify colors
+  scale_color_manual(values = c("blue", "red")) +  # Specify colors
   scale_linetype_manual(values = c("dotted", "solid")) +  # Specify linetypes
   labs(x = expression("Growth temperature ("*degree*"C)"),
        y = "Photosynthesis",
@@ -44,7 +44,7 @@ ac.plot <- ggplot(data = df.total,
 vcmax.plot <- ggplot(data = df.total, 
        aes(x = tg_c, y = vcmax25, color = pathway, linetype = factor(cao))) +
   geom_line(size = 2) +
-  scale_color_manual(values = c("red", "blue")) +  # Specify colors
+  scale_color_manual(values = c("blue", "red")) +  # Specify colors
   scale_linetype_manual(values = c("dotted", "solid")) +  # Specify linetypes
   labs(x = expression("Growth temperature ("*degree*"C)"),
        y = expression(bold(italic("V")["cmax25"]*" ("*mu*"mol m"^"-2"*" s"^"-1"*")")),
@@ -58,10 +58,10 @@ vcmax.plot <- ggplot(data = df.total,
 # Jmax plot
 jmax.plot <- ggplot(data = df.total, aes(x = tg_c, y = jmax25, color = pathway, linetype = factor(cao))) +
   geom_line(size = 2) +
-  scale_color_manual(values = c("red", "blue")) +  # Specify colors
+  scale_color_manual(values = c("blue", "red")) +  # Specify colors
   scale_linetype_manual(values = c("dotted", "solid")) +  # Specify linetypes
   labs(x = expression("Growth temperature ("*degree*"C)"),
-       y = expression(bold(italic("J")["cmax25"]*" ("*mu*"mol m"^"-2"*" s"^"-1"*")")),
+       y = expression(bold(italic("J")["max25"]*" ("*mu*"mol m"^"-2"*" s"^"-1"*")")),
        color = "Photo. pathway",
        linetype = expression("CO"[2])) +
   theme_bw(base_size = 20) +
@@ -73,7 +73,7 @@ jmax.plot <- ggplot(data = df.total, aes(x = tg_c, y = jmax25, color = pathway, 
 chi.plot <- ggplot(data = df.total, aes(x = tg_c, y = chi, color = pathway, 
                             linetype = factor(cao))) +
   geom_line(size = 2) +
-  scale_color_manual(values = c("red", "blue")) +  # Specify colors
+  scale_color_manual(values = c("blue", "red")) +  # Specify colors
   scale_linetype_manual(values = c("dotted", "solid")) +  # Specify linetypes
   labs(x = expression("Growth temperature ("*degree*"C)"),
        y = expression(chi),
@@ -88,7 +88,7 @@ chi.plot <- ggplot(data = df.total, aes(x = tg_c, y = chi, color = pathway,
 vpmax.plot <- ggplot(data = subset(df.total,pathway=="C4"), aes(x = tg_c, y = vpmax, color = pathway, 
                             linetype = factor(cao))) +
   geom_line(size = 2) +
-  scale_color_manual(values = c("blue")) +  # Specify colors
+  scale_color_manual(values = c("red")) +  # Specify colors
   scale_linetype_manual(values = c("dotted", "solid")) +  # Specify linetypes
   labs(x = expression("Growth temperature ("*degree*"C)"),
        y = expression(bold(italic("V")["pmax25"]*" ("*mu*"mol m"^"-2"*" s"^"-1"*")")),
