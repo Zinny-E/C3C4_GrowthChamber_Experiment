@@ -676,19 +676,27 @@ merged_curves <- lapply(file.list, read.csv) %>%
 
 co2_resp_chamber_2 <- merged_curves %>%
   filter(chamber == 2)
-write.csv(co2_resp_chamber_2, "../licor_cleaned/TxCO2_combined_datasheets/TXCO2_co2_resp_chamber_2.csv", row.names = FALSE)
+write.csv(co2_resp_chamber_2, 
+          "../licor_cleaned/TxCO2_combined_datasheets/TXCO2_co2_resp_chamber_2.csv",
+          row.names = FALSE)
 
 co2_resp_chamber_3 <- merged_curves %>%
   filter(chamber == 3)
-write.csv(co2_resp_chamber_3, "../licor_cleaned/TxCO2_combined_datasheets/TXCO2_co2_resp_chamber_3.csv", row.names = FALSE)
+write.csv(co2_resp_chamber_3, 
+          "../licor_cleaned/TxCO2_combined_datasheets/TXCO2_co2_resp_chamber_3.csv", 
+          row.names = FALSE)
 
 co2_resp_chamber_4 <- merged_curves %>%
   filter(chamber == 4)
-write.csv(co2_resp_chamber_4, "../licor_cleaned/TxCO2_combined_datasheets/TXCO2_co2_resp_chamber_4.csv", row.names = FALSE)
+write.csv(co2_resp_chamber_4, 
+          "../licor_cleaned/TxCO2_combined_datasheets/TXCO2_co2_resp_chamber_4.csv", 
+          row.names = FALSE)
 
 co2_resp_chamber_5 <- merged_curves %>%
   filter(chamber == 5)
-write.csv(co2_resp_chamber_5, "../licor_cleaned/datasheets/TXCO2_co2_resp_chamber_5.csv", row.names = FALSE)
+write.csv(co2_resp_chamber_5, 
+          "../licor_cleaned/datasheets/TXCO2_co2_resp_chamber_5.csv", 
+          row.names = FALSE)
 
 
 ###############################################################################
@@ -734,4 +742,3 @@ rd.chamber_2 <- rd %>%
 
 write.csv(rd.chamber_2, "../licor_cleaned/datasheets/TxCO2_rd_chamber_2.csv", row.names = FALSE)
 
-## End of data cleaning, ready for curve fitting ##

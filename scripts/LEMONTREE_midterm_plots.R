@@ -3,7 +3,7 @@ library(ggplot2)
 library(dplyr)
 library(ggpubr)
 
-##setwd(#"/Users/eaperkowski/git/optimal_vcmax_R/")
+##Optimality model hypothesis plots
 
 setwd("~/git_repo/optimal_vcmax_R")
 
@@ -13,41 +13,47 @@ sourceDirectory("functions")
 
 # Do optimality model simulations for C4 species across range in temps and 
 # binned into two CO2 treatments
-df.c4.420 <- calc_optimal_vcmax(pathway = "C4", tg_c = seq(20, 35, 1), cao = 420)
-df.c4.1000 <- calc_optimal_vcmax(pathway = "C4", tg_c = seq(20, 35, 1), cao = 1000)
+df.c4.420 <- calc_optimal_vcmax(pathway = "C4", tg_c = seq(10, 45, 1), cao = 420)
+df.c4.1000 <- calc_optimal_vcmax(pathway = "C4", tg_c = seq(10, 45, 1), cao = 1000)
 
 # Do optimality model simulations for C3 species across range in temps and 
 # binned into two CO2 treatments
-df.c3.420 <- calc_optimal_vcmax(pathway = "C3", tg_c = seq(20, 35, 1), cao = 420)
-df.c3.1000 <- calc_optimal_vcmax(pathway = "C3", tg_c = seq(20, 35, 1), cao = 1000)
+df.c3.420 <- calc_optimal_vcmax(pathway = "C3", tg_c = seq(10, 45, 1), cao = 420)
+df.c3.1000 <- calc_optimal_vcmax(pathway = "C3", tg_c = seq(10, 45, 1), cao = 1000)
 
 # Merge all simulations into central data frame
 df.total <- df.c3.420 %>% full_join(df.c3.1000) %>% full_join(df.c4.420) %>%
   full_join(df.c4.1000)
 
-# Net photosynthesis plot
-ac.plot <- ggplot(data = df.total, 
-                  aes(x = tg_c, y = Ac, color = pathway, linetype = factor(cao))) +
-  geom_line(size = 2) +
-  scale_color_manual(values = c("blue", "red")) +  # Specify colors
+#merge just the c4 table
+df.total_c4 <- df.c4.420 %>% full_join(df.c4.1000) 
+
+# Net photosynthesis plot (amax)
+amax.plot <- ggplot(data = subset(df.total_c4,pathway=="C4"), 
+                  aes(x = tg_c, y = amax/amax[16], color = pathway, linetype = factor(cao))) +
+  geom_line(size = 2) + coord_cartesian(ylim = c(0.5,2.0)) +
+  scale_color_manual(values = c("red", "blue")) +  # Specify colors
   scale_linetype_manual(values = c("dotted", "solid")) +  # Specify linetypes
+  scale_x_continuous(breaks = c(10, 15,20, 25, 30, 35, 40)) + # Specify breaks for specific temperature values # Specify linetypes
   labs(x = expression("Growth temperature ("*degree*"C)"),
-       y = "Photosynthesis",
+       y = expression(bold(italic("A")["max25"])),
        color = "Photo. pathway",
        linetype = expression("CO"[2])) +
   theme_bw(base_size = 20) +
   theme(axis.title.x = element_text(size = 20),
-        axis.title.y = element_text(size = 20))
+        axis.title.y = element_text(size = 20))+
+  theme(legend.position = "top") 
 
 
 # Vcmax plot
-vcmax.plot <- ggplot(data = df.total, 
-       aes(x = tg_c, y = vcmax25, color = pathway, linetype = factor(cao))) +
-  geom_line(size = 2) +
+vcmax.plot <- ggplot(data = subset(df.total,pathway=="C3"), 
+       aes(x = tg_c, y = vcmax25/vcmax25[16], color = pathway, linetype = factor(cao))) +
+  geom_line(size = 2) + coord_cartesian(ylim = c(0.5,2.0)) +
   scale_color_manual(values = c("blue", "red")) +  # Specify colors
   scale_linetype_manual(values = c("dotted", "solid")) +  # Specify linetypes
+  scale_x_continuous(breaks = c(10, 15,20, 25, 30, 35, 40)) + # Specify breaks for specific temperature values # Specify linetypes
   labs(x = expression("Growth temperature ("*degree*"C)"),
-       y = expression(bold(italic("V")["cmax25"]*" ("*mu*"mol m"^"-2"*" s"^"-1"*")")),
+       y = expression(bold(italic("V")["cmax25"])),
        color = "Photo. pathway",
        linetype = expression("CO"[2])) +
   theme_bw(base_size = 20) +
@@ -56,12 +62,13 @@ vcmax.plot <- ggplot(data = df.total,
   theme(legend.position = "top")
 
 # Jmax plot
-jmax.plot <- ggplot(data = df.total, aes(x = tg_c, y = jmax25, color = pathway, linetype = factor(cao))) +
-  geom_line(size = 2) +
+jmax.plot <- ggplot(data = subset(df.total,pathway=="C3"), aes(x = tg_c, y = jmax25/jmax25[16], color = pathway, linetype = factor(cao))) +
+  geom_line(size = 2) + coord_cartesian(ylim = c(0.5,2.0)) +
   scale_color_manual(values = c("blue", "red")) +  # Specify colors
-  scale_linetype_manual(values = c("dotted", "solid")) +  # Specify linetypes
+  scale_linetype_manual(values = c("dotted", "solid")) + # Specify linetypes
+  scale_x_continuous(breaks = c(10, 15,20, 25, 30, 35, 40)) + # Specify breaks for specific temperature values # Specify linetypes
   labs(x = expression("Growth temperature ("*degree*"C)"),
-       y = expression(bold(italic("J")["max25"]*" ("*mu*"mol m"^"-2"*" s"^"-1"*")")),
+       y =  expression(bold(italic(" Investment in J")["max25"])),
        color = "Photo. pathway",
        linetype = expression("CO"[2])) +
   theme_bw(base_size = 20) +
@@ -70,11 +77,28 @@ jmax.plot <- ggplot(data = df.total, aes(x = tg_c, y = jmax25, color = pathway, 
   theme(legend.position = "top")
 
 # Chi plot
-chi.plot <- ggplot(data = df.total, aes(x = tg_c, y = chi, color = pathway, 
+chi.plot.c3 <- ggplot(data = subset(df.total,pathway=="C3"), aes(x = tg_c, y = chi/chi[16], color = pathway, 
                             linetype = factor(cao))) +
   geom_line(size = 2) +
   scale_color_manual(values = c("blue", "red")) +  # Specify colors
   scale_linetype_manual(values = c("dotted", "solid")) +  # Specify linetypes
+  scale_x_continuous(breaks = c(10, 15,20, 25, 30, 35, 40)) + # Specify breaks for specific temperature values # Specify linetypes
+  labs(x = expression("Growth temperature ("*degree*"C)"),
+       y = expression(chi),
+       color = "Photo. pathway",
+       linetype = expression("CO"[2])) +
+  theme_bw(base_size = 20) +
+  theme(axis.title.x = element_text(size = 20),
+        axis.title.y = element_text(size = 20)) +
+  theme(legend.position = "top") 
+
+# Chi plot
+chi.plot.c4 <- ggplot(data = subset(df.total_c4,pathway=="C4"),  aes(x = tg_c, y = chi/chi[16], color = pathway, 
+                                        linetype = factor(cao))) +
+  geom_line(size = 2) +
+  scale_color_manual(values = c("red", "blue")) +  # Specify colors
+  scale_linetype_manual(values = c("dotted", "solid")) +  # Specify linetypes
+  scale_x_continuous(breaks = c(10, 15,20, 25, 30, 35, 40)) + # Specify breaks for specific temperature values # Specify linetypes
   labs(x = expression("Growth temperature ("*degree*"C)"),
        y = expression(chi),
        color = "Photo. pathway",
@@ -85,13 +109,14 @@ chi.plot <- ggplot(data = df.total, aes(x = tg_c, y = chi, color = pathway,
   theme(legend.position = "top") 
 
 # Vpmax plot
-vpmax.plot <- ggplot(data = subset(df.total,pathway=="C4"), aes(x = tg_c, y = vpmax, color = pathway, 
+vpmax.plot <- ggplot(data = subset(df.total_c4,pathway=="C4"), aes(x = tg_c, y = vpmax25/vpmax25[16], color = pathway, 
                             linetype = factor(cao))) +
-  geom_line(size = 2) +
-  scale_color_manual(values = c("red")) +  # Specify colors
+  geom_line(size = 2) + coord_cartesian(ylim = c(0.5,2.0)) +
+  scale_color_manual(values = c("red","blue")) +  # Specify colors
   scale_linetype_manual(values = c("dotted", "solid")) +  # Specify linetypes
+  scale_x_continuous(breaks = c(10, 15,20, 25, 30, 35, 40)) + # Specify breaks for specific temperature values # Specify linetypes
   labs(x = expression("Growth temperature ("*degree*"C)"),
-       y = expression(bold(italic("V")["pmax25"]*" ("*mu*"mol m"^"-2"*" s"^"-1"*")")),
+       y = expression(bold(italic("V")["pmax25"])),
        color = "Photo. pathway",
        linetype = expression("CO"[2])) +
   theme_bw(base_size = 20) +
@@ -106,10 +131,10 @@ ac.plot
 dev.off()
 
 # Write mechanism figure
-png("~/Desktop/Lemontree/zinny_mechanism.png", width = 20, height = 7, 
+png("~/Desktop/Lemontree_presentations/dissertation_hypothesis.png", width = 20, height = 7, 
     units = "in", res = 600)
-ggarrange(vcmax.plot, jmax.plot, chi.plot, vpmax.plot, 
-          nrow = 1, ncol = 4, common.legend = TRUE, legend = "top") 
+ggarrange(vcmax.plot,  jmax.plot, chi.plot.c3,  vpmax.plot, amax.plot, chi.plot.c4,
+          nrow = 2, ncol = 3, common.legend = TRUE, legend = "right") 
 dev.off()
 
 
@@ -123,3 +148,24 @@ diff_photo_highT_highCO2 <- ((df.c4.1000$Al[16] - df.c3.1000$Al[16])/df.c4.1000$
 
 
 
+
+ ggplot(data = subset(df.total,pathway=="C4"), aes(x = vpmax25 , y = amax, color = pathway, 
+                                                                linetype = factor(cao))) +
+  geom_line(size = 2)
+
+
+ 
+
+ 
+ 
+ df.c4.20 <- calc_optimal_vcmax(pathway = "C4", cao = seq(250, 1000, 50), tg_c = 20)
+ df.c4.35 <- calc_optimal_vcmax(pathway = "C4", cao = seq(250, 1000, 50), tg_c = 35)
+ df.c4.27.5 <- calc_optimal_vcmax(pathway = "C4", cao = seq(250, 1000, 50), tg_c = 27.5)
+ 
+ # Merge all simulations into central data frame
+ df.total.temp <- df.c4.20 %>% full_join(df.c4.35) %>% full_join(df.c4.27.5) 
+ 
+ 
+ ggplot(data = df.total.temp, aes(x = tg_c, y = vpmax25, color = as.factor(tg_c))) +
+   geom_boxplot()
+ 

@@ -8,7 +8,7 @@ library(plantecophys)
 ###############################################################################
 ## Import files
 ###############################################################################
-chamber5<- read.csv("~/git/C3C4_GrowthChamber_Experiment/licor_cleaned/TxCO2_combined_datasheets/TXCO2_co2_resp_chamber_5.csv") %>%
+chamber5<- read.csv("~/git/C3C4_GrowthChamber_Experiment/TxCO2_licorcleaned/TxCO2combinedataset/TXCO2_co2_resp_chamber_5.csv") %>%
   mutate(temp.setpoint = ifelse(Tleaf > 19 & Tleaf < 21, 
                                 20,
                                 ifelse(Tleaf > 27 & Tleaf < 28,
@@ -19,7 +19,7 @@ chamber5<- read.csv("~/git/C3C4_GrowthChamber_Experiment/licor_cleaned/TxCO2_com
 
 
 
-rd_chamber5 <- read.csv("~/git/C3C4_GrowthChamber_Experiment/licor_cleaned/TxCO2_combined_datasheets/TxCO2_rd_chamber_5.csv") %>%
+rd_chamber5 <- read.csv("~/git/C3C4_GrowthChamber_Experiment/TxCO2_licorcleaned/TxCO2combinedataset/TxCO2_rd_chamber_5.csv") %>%
   mutate(temp.setpoint = ifelse(Tleaf > 19 & Tleaf < 21, 
                                 20,
                                 ifelse(Tleaf > 27 & Tleaf < 28,
@@ -61,7 +61,8 @@ aci_prep_chamber5 <- chamber5  %>%
 
 aci_prep_chamber5 <- rename(aci_prep_chamber5, Tleaf = temp.setpoint, rd = rd_mean)
 
-
+write.csv(aci_prep_chamber5, "../C3C4_GrowthChamber_Experiment/TxCO2_licorcleaned/TxCO2combinedataset/aci.prep.chamber5.csv", 
+          row.names = FALSE)
 
 #aci.prep$keep.row[c(,)] <- "no" # removes points that are outliers
   
@@ -81,6 +82,11 @@ ely_can25_t1_ch5 <- aci_prep_chamber5 %>% filter(keep.row == "yes" & id == "ely_
                          Rd = "rd"),
          fitTPU = TRUE, Tcorrect = FALSE, useRd = TRUE)
 
+aci.prep.chamber4$keep.row[c(2135,2136,2231,2232,2293,2294,2295,2296,2297,2298,
+                             2299,2300,2301,2302,2303,2304,2165,2166,2167,
+                             2168,2169,2170,2171,2172,2173,2174,2175,2176,
+                             2177,2178,2179,2180,2181,2182,2183,
+                             2157,2158,2159,2160,2161,2162,2163,2164,2165)] <- "no" # removes points that are outliers
 plot(ely_can25_t1_ch5)
 chamber5_aci.coefs <- data.frame(id = "ely_can25_t1_ch5", pathway = "C3", t(coef(ely_can25_t1_ch5)))
 
@@ -206,7 +212,7 @@ ely_can30_t3_ch5 <- aci_prep_chamber5 %>% filter(keep.row == "yes" & id == "ely_
          fitTPU = TRUE, Tcorrect = FALSE, useRd = TRUE)
 
 plot(ely_can30_t3_ch5)
-aci.coefs[11,] <- data.frame(id = "ely_can30_t3_ch5", pathway ="C3", t(coef(ely_can30_t3_ch5)))
+chamber5_aci.coefs[11,] <- data.frame(id = "ely_can30_t3_ch5", pathway ="C3", t(coef(ely_can30_t3_ch5)))
 
 
 ely_can30_t3_ch5_27.5 <- aci_prep_chamber5 %>% filter(keep.row == "yes" & id == "ely_can30_t3_ch5_27.5" &
@@ -310,14 +316,16 @@ pas_smi26_t1_ch5<- aci_prep_chamber5 %>% filter(keep.row == "yes" & id == "pas_s
                          PPFD = "Qin", 
                          Rd = "rd"),
          fitTPU = TRUE, Tcorrect = FALSE, useRd = TRUE)
-#aci_prep_chamber5$keep.row[c(2786,2787,2788,2789,2790,
-#                             2791,2792,2733,2794,2795,2796,2797,
- #                           2798,2799,2880,2801,2802,2803,2804,2805,2806,
-  #                          2807,2808,2809,2810,2811,2812,2813,2814,
-   #                         2815,2817,2816,2818,2819,2874,2875, 2876, 
-    #                        2862,2863,2864, 2865,2866, 2867,2868, 2869,2870,2871,2872,2873,
-     #                       2877, 2878, 2879,2880,2847,2848,2849,2850,2851,2852,
-      #                      2853,2854,2855, 2856,2857, 2858, 2859,2860, 2861)] <- "no" # removes points that are outliers
+aci_prep_chamber5$keep.row[c(2690,2691,2692,2693,2694,2695,2696,2697,2698,2699,
+2700,2701,2702,2703,2704,2705,2706,2707,2708,2709,
+2710,2711,2712,2713,2714,2715,2716,2717,2718,2719,
+2720,2721,2722,2723,2724,2725,2726,2727,2728,2729,
+2730,2731,2732,2733,2734,2735,2736,2737,2738,2739,
+2740,2741,2742,2743,2744,2745,2746,2747,2748,2749,
+2750,2751,2752,2753,2754,2755,2756,2757,2758,2759,
+2760,2761,2762,2763,2764,2765,2766,2767,2768,2769,
+2770,2771,2772,2773,2774,2775,2776,2777,2778,2779,
+2780,2781,2782,2783,2784,2785)] <- "no" # removes points that are outliers
                              
 plot(pas_smi26_t1_ch5)
 chamber5_aci.coefs[19,] <- data.frame(id = "pas_smi26_t1_ch5", pathway ="C3", t(coef(pas_smi26_t1_ch5)))
@@ -483,7 +491,7 @@ plot(pas_smi32_t4_ch5)
 chamber5_aci.coefs[31,] <- data.frame(id = "pas_smi32_t4_ch5", pathway ="C3", t(coef(pas_smi32_t4_ch5)))
 
 
-pas_smi32_t4_ch5_27.5<- aci_prep_chamber5 %>% filter(keep.row == "yes" & id == "pas_Smi32_t4_Ch5_27.5" &
+pas_smi32_t4_ch5_27.5<- aci_prep_chamber5 %>% filter(keep.row == "yes" & id == "pas_smi32_t4_ch5_27.5" &
                                                   Ci < 1200) %>%
   fitaci(varnames = list(ALEAF = "A",
                          Tleaf = "T_eaf",
@@ -702,7 +710,7 @@ poa_pra32_t4_ch5 <- aci_prep_chamber5 %>% filter(keep.row == "yes" & id == "poa_
          fitTPU = TRUE, Tcorrect = FALSE, useRd = TRUE)
 
 plot(poa_pra32_t4_ch5)
-chamber5_aci.coefs[43,] <- data.frame(id = "poa_pra32_t4_ch5", pathway ="C3", t(coef(poa_pra32_t4_ch5)))
+chamber5_aci.coefs[47,] <- data.frame(id = "poa_pra32_t4_ch5", pathway ="C3", t(coef(poa_pra32_t4_ch5)))
 
 
 poa_pra32_t4_ch5_27.5 <- aci_prep_chamber5 %>% filter(keep.row == "yes" & id == "poa_pra32_t4_ch5_27.5" &
@@ -715,8 +723,9 @@ poa_pra32_t4_ch5_27.5 <- aci_prep_chamber5 %>% filter(keep.row == "yes" & id == 
          fitTPU = TRUE, Tcorrect = FALSE, useRd = TRUE)
 
 plot(poa_pra32_t4_ch5_27.5)
-chamber5_aci.coefs[44,] <- data.frame(id = "poa_pra32_t4_ch5_27.5", pathway ="C3", t(coef(poa_pra32_t4_ch5_27.5)))
+chamber5_aci.coefs[48,] <- data.frame(id = "poa_pra32_t4_ch5_27.5", pathway ="C3", t(coef(poa_pra32_t4_ch5_27.5)))
 
-write.csv(chamber5_aci.coefs, "~/git/C3C4_GrowthChamber_Experiment/TxCO2_datasheets/aci.coefs_chamber5.csv", row.names = FALSE)
+write.csv(chamber5_aci.coefs, "~/git/C3C4_GrowthChamber_Experiment/TxCO2_licorcleaned/TxCO2combinedataset/aci.coefs_chamber5.csv", 
+          row.names = FALSE)
 
 

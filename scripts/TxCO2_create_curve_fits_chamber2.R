@@ -8,7 +8,7 @@ library(plantecophys)
 ###############################################################################
 ## Import files
 ###############################################################################
-chamber2 <- read.csv("~/git/C3C4_GrowthChamber_Experiment/licor_cleaned/TxCO2_combined_datasheets/TXCO2_co2_resp_chamber_2.csv") %>%
+chamber2 <- read.csv("~/git/C3C4_GrowthChamber_Experiment/TxCO2_licorcleaned/TxCO2combinedataset/TXCO2_co2_resp_chamber_2.csv") %>%
     mutate(temp.setpoint = ifelse(Tleaf > 19 & Tleaf < 21, 
                                   20,
                                   ifelse(Tleaf > 27 & Tleaf < 28,
@@ -19,7 +19,7 @@ chamber2 <- read.csv("~/git/C3C4_GrowthChamber_Experiment/licor_cleaned/TxCO2_co
 
 
 
-rd_chamber2 <- read.csv("~/git/C3C4_GrowthChamber_Experiment/licor_cleaned/TxCO2_combined_datasheets/TxCO2_rd_chamber_2.csv") %>%
+rd_chamber2 <- read.csv("~/git/C3C4_GrowthChamber_Experiment/TxCO2_licorcleaned/TxCO2combinedataset/TxCO2_rd_chamber_2.csv") %>%
     mutate(temp.setpoint = ifelse(Tleaf > 19 & Tleaf < 21, 
                                   20,
                                   ifelse(Tleaf > 27 & Tleaf < 28,
@@ -27,6 +27,8 @@ rd_chamber2 <- read.csv("~/git/C3C4_GrowthChamber_Experiment/licor_cleaned/TxCO2
                                          ifelse(Tleaf > 34 & Tleaf < 36,
                                                 35,
                                                 NA))))
+
+
 ##grouping respiration by id and temp setpoint and then finding the mean
 rd_chamber2_group_by <- group_by(rd_chamber2, id, temp.setpoint, chamber, machine)
 rd_chamber2_mean <- summarise(rd_chamber2_group_by, rd_mean = mean(rd, na.rm = T))
@@ -60,25 +62,13 @@ aci.prep <- chamber2  %>%
   data.frame()
 
 
+#rename columns
 aci.prep<- rename(aci.prep, Tleaf = temp.setpoint, rd = rd_mean)
 
-##
-b <- chamber2_aci.coefs
-a <- ifelse(grepl("_27.5", chamber2_aci.coefs$id), 27.5, 20)
-b$temperature <- a
-b <- na.omit(b)
-d <- b %>% group_by(temperature) %>%
-  summarise(meanVcmax=mean(as.numeric(Vcmax)))
 
-class(b$Vcmax)
-ggplot(d, aes(temperature, Vcmax)) +
-  geom_point()
-#aci.prep <- left_join(chamber2, rd_chamber2_mean, by = c("id", "temp.setpoint"))
-#head(aci.prep)
 
-#aci.prep$keep.row[c(,)] <- "no" # removes points that are outliers
+##write.csv(aci.prep, "../TxCO2_licorcleaned/TxCO2combinedataset/aci.prep_chamber2.csv", row.names = FALSE)
 
-##write.csv(aci.prep, "../licor_cleaned/TxCO2_combined_datasheets/aci.prep.chamber2.csv", row.names = FALSE)
 #####################################################################
 # A/Ci curves
 #####################################################################
@@ -175,7 +165,7 @@ ely_can4_t2_ch2 <- aci.prep %>% filter(keep.row == "yes" & id == "ely_can4_t2_ch
 plot(ely_can4_t2_ch2)
 chamber2_aci.coefs[7,] <- c(id = "ely_can4_t2_ch2",pathway = "C3", t(coef(ely_can4_t2_ch2)))
 
-#redo
+#bad curve
 ely_can4_t2_ch2_27.5 <- aci.prep %>% filter(keep.row == "yes" & id == "ely_can4_t2_ch2_27.5"& 
                                          Ci < 2000) %>%
   fitaci(varnames = list(ALEAF = "A",
@@ -185,6 +175,7 @@ ely_can4_t2_ch2_27.5 <- aci.prep %>% filter(keep.row == "yes" & id == "ely_can4_
                          Rd = "rd"),
          fitTPU = TRUE, Tcorrect = FALSE, useRd = TRUE)
 #aci.prep$keep.row[c(1958)] <- "no" # removes points that are outliers
+summary(ely_can4_t2_ch2_27.5)
 plot(ely_can4_t2_ch2_27.5)
 chamber2_aci.coefs[8,] <- c(id = "ely_can4_t2_ch2_27.5", t(coef(ely_can4_t2_ch2_27.5)))
 
@@ -198,6 +189,7 @@ ely_can5_t3_ch2 <- aci.prep %>% filter(keep.row == "yes" & id == "ely_can5_t3_ch
          fitTPU = TRUE, Tcorrect = FALSE, useRd = TRUE)
 aci.prep$keep.row[c(2016)] <- "no" # removes points that are outliers
 plot(ely_can5_t3_ch2)
+summary(ely_can5_t3_ch2)
 chamber2_aci.coefs[9,] <- c(id = "ely_can5_t3_ch2", t(coef(ely_can5_t3_ch2)))
 
 
@@ -459,7 +451,6 @@ poa_pra1_t1_ch2 <- aci.prep %>% filter(keep.row == "yes" & id == "poa_pra1_t1_ch
                          Rd = "rd"),
          fitTPU = TRUE, Tcorrect = FALSE, useRd = TRUE)
 
-#aci.prep$keep.row[c(3937, 3935,3936)] <- "no" # removes points that are outliers
 plot(poa_pra1_t1_ch2)
 chamber2_aci.coefs[29,] <- c(id = "poa_pra1_t1_ch2",pathway = "C3", t(coef(poa_pra1_t1_ch2)))
 
@@ -472,7 +463,6 @@ poa_pra1_t1_ch2_27.5 <- aci.prep %>% filter(keep.row == "yes" & id == "poa_pra1_
                          Rd = "rd"),
          fitTPU = TRUE, Tcorrect = FALSE, useRd = TRUE)
 
-#aci.prep$keep.row[c(4033, 4032, 4031)] <- "no" # removes points that are outliers
 plot(poa_pra1_t1_ch2_27.5)
 chamber2_aci.coefs[30,] <- c(id = "poa_pra1_t1_ch2_27.5", pathway = "C3",t(coef(poa_pra1_t1_ch2_27.5)))
 
@@ -500,7 +490,7 @@ poa_pra2_t1_ch2_27.5<- aci.prep %>% filter(keep.row == "yes" & id == "poa_pra2_t
                          Rd = "rd"),
          fitTPU = TRUE, Tcorrect = FALSE, useRd = TRUE)
 
-#aci.prep$keep.row[c(4225,4224)] <- "no" # removes points that are outliers
+
 plot(poa_pra2_t1_ch2_27.5)
 chamber2_aci.coefs[32,] <- c(id = "poa_pra2_t1_ch2_27.5", pathway = "C3",t(coef(poa_pra2_t1_ch2_27.5)))
 
@@ -664,77 +654,7 @@ chamber2_aci.coefs[44,] <- c(id = "poa_pra8_t4_ch2_27.5", pathway = "C3",t(coef(
 
 
 ##write aci_coefs data
-
-write.csv(chamber2_aci.coefs, "~/git/C3C4_GrowthChamber_Experiment/TxCO2_datasheets/aci.coefs_chamber2.csv", row.names = FALSE)
-
-
-#####################################################################
-# A/Ci curve temp standardization
-#####################################################################
-aci.coefs$Vcmax <- as.numeric(aci.coefs$Vcmax)
-aci.coefs$Jmax <- as.numeric(aci.coefs$Jmax)
-aci.coefs$Rd <- as.numeric(aci.coefs$Rd)
-aci.coefs$TPU <- as.numeric(aci.coefs$TPU)
-
-aci.coefs[, c(2:5)] <- round(aci.coefs[, c(2:5)], digits = 3)
-
-aci.fits <- aci.coefs %>% left_join(aci.temps) %>%
-  mutate(vcmax25 = temp_standardize(Vcmax, "Vcmax", standard.to = 25,
-                                    tLeaf = Tleaf, tGrow = 22.5),
-         jmax25 = temp_standardize(Jmax, "Jmax", standard.to = 25,
-                                   tLeaf = Tleaf, tGrow = 22.5),
-         jmax25.vcmax25 = jmax25 / vcmax25) %>%
-  dplyr::select(id, tleaf = Tleaf, vcmax25, jmax25, jmax25.vcmax25, rd25 = Rd, tpu = TPU) %>%
-  mutate_if(is.numeric, round, 3)
-
-#####################################################################
-# Extract snapshot measurements at 420 ppm CO2
-#####################################################################
-anet <- aci.prep %>%
-  filter(CO2_r > 419.5 & CO2_r < 420.5) %>%
-  group_by(id) %>%
-  summarize(anet = mean(A),
-            gsw = mean(gsw),
-            ci.ca = mean(Ci) / mean(Ca)) %>%
-  filter(id != "a_n_630_141" & id != "a_y_280_100" & id != "a_y_350_101") %>%
-  mutate(id = ifelse(id == "a_n_630_141_b", "a_n_630_141", id),
-         id = ifelse(id == "a_y_280_100_b", "a_y_280_100", id),
-         id = ifelse(id == "a_y_350_101_b", "a_y_350_101", id))
-
-#####################################################################
-# Extract snapshot measurements at growth CO2 concentration
-#####################################################################
-agrowth_prep <- aci.prep %>%
-  filter(id != "a_n_630_141" & id != "a_y_280_100" & id != "a_y_350_101") %>%
-  mutate(id = ifelse(id == "a_n_630_141_b", "a_n_630_141", id),
-         id = ifelse(id == "a_y_280_100_b", "a_y_280_100", id),
-         id = ifelse(id == "a_y_350_101_b", "a_y_350_101", id)) %>%
-  separate(col = id, into = c("co2", "inoc", "n.ppm", "rep"), remove = FALSE)
-
-agrowth_amb <- agrowth_prep %>% filter(co2 == "a") %>%
-  group_by(id) %>%
-  filter(CO2_r > 419.5 & CO2_r < 420.5) %>%
-  summarize(anet.growth = mean(A),
-            gsw.growth = mean(gsw))
-
-agrowth_elv <- agrowth_prep %>% filter(co2 == "e") %>%
-  group_by(id) %>%
-  filter(CO2_r > 990 & CO2_r < 1010) %>%
-  summarize(anet.growth = mean(A),
-            gsw.growth = mean(gsw))
-agrowth <- agrowth_amb %>% full_join(agrowth_elv)
-
-#####################################################################
-# Merge snapshot measurements with A/Ci rate estimates
-#####################################################################
-photo.data <- anet %>% full_join(agrowth) %>% full_join(aci.fits) %>% 
-  mutate_if(is.numeric, round, 3) %>%
-  dplyr::select(id, tleaf, anet, anet.growth, gsw, gsw.growth, ci.ca, vcmax25, jmax25, jmax25.vcmax25, rd25, tpu)
-
-#####################################################################
-# Write file
-#####################################################################
-write.csv(photo.data, "../data_sheets/NxCO2_photo_data.csv", row.names = FALSE)
-
+write.csv(chamber2_aci.coefs, "~/git/C3C4_GrowthChamber_Experiment/TxCO2_licorcleaned/TxCO2combinedataset/aci.coefs.c3_chamber2.csv", 
+          row.names = FALSE)
 
 
