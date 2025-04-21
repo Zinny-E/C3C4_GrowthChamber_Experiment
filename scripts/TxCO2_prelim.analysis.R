@@ -635,7 +635,9 @@ cld(emmeans(marea_lm, pairwise~co2_trt*species, type = "response"))
 
 
 
-
+# Replace max value(s) column with NA
+max_value <- max(df$jmax_vcmax, na.rm = TRUE)  
+df$jmax_vcmax[df$jmax_vcmax == max_value] <- NA   
 ############################################################
 #####jmaxvcmax_ratio
 jmaxvcmax_lm <- lm(log(jmax_vcmax) ~ co2_trt*temp_trt*species, 
@@ -675,15 +677,19 @@ cld(emmeans(jmaxvcmax_lm, pairwise~co2_trt*temp_trt*species, type = "response"))
 
 
 
-############################################################
-#####amaxvpmax_ratio
+
+# Replace max value(s) column with NA
+max_value <- max(df$amax_vpmax, na.rm = TRUE)  
+df$amax_vpmax[df$amax_vpmax == max_value] <- NA
+###################################################################
+###amaxvpmax ratio
 amaxvpmax_lm <- lm(log(amax_vpmax) ~ co2_trt*temp_trt*species, 
-                   data = subset(df, ps_pathway  ==  "C4"),
-                   na.action = na.exclude)
+               data = df,
+               na.action = na.exclude)
 
 
 
-# Check model assumptions
+
 plot(resid(amaxvpmax_lm) ~ fitted(amaxvpmax_lm))
 qqnorm(residuals(jmaxvcmax_lm))
 qqline(residuals(jmaxvcmax_lm))
@@ -705,7 +711,7 @@ emmeans(jmaxvcmax_lm, ~temp_trt*co2_trt)
 
 # Post-hoc tests
 cld(emmeans(amaxvpmax_lm, pairwise~temp_trt, type = "response"))
-cld(emmeans(jmaxvcmax_lm, pairwise~co2_trt, type = "response"))
+cld(emmeans(amaxvpmax_lm, pairwise~co2_trt, type = "response"))
 cld(emmeans(jmaxvcmax_lm, pairwise~temp_trt*co2_trt, type = "response"))
 cld(emmeans(amaxvpmax_lm, pairwise~temp_trt*species, type = "response"))
 cld(emmeans(jmaxvcmax_lm, pairwise~co2_trt*temp_trt*species, type = "response"))
@@ -713,6 +719,42 @@ cld(emmeans(jmaxvcmax_lm, pairwise~co2_trt*temp_trt*species, type = "response"))
 
 
 
+
+
+
+
+############################################################
+#####delta
+delta_lm <- lm(delta ~ co2_trt*temp_trt*species, 
+                   data = df,
+                   na.action = na.exclude)
+
+# Check model assumptions
+plot(resid(delta_lm) ~ fitted(delta_lm))
+qqnorm(residuals(delta_lm))
+qqline(residuals(delta_lm))
+hist(residuals(delta_lm))
+shapiro.test(residuals(delta_lm))
+outlierTest(delta_lm)
+
+######################model results
+Anova(delta_lm)
+summary(delta_lm)
+
+###########Individual effects#########################
+emmeans(delta_lm, ~species)
+emmeans(delta_lm, ~temp_trt)
+emmeans(delta_lm, pairwise~co2_trt)
+emmeans(delta_lm, pairwise~temp_trt)
+emmeans(delta_lm, ~temp_trt*co2_trt)
+
+
+# Post-hoc tests
+cld(emmeans(delta_lm, pairwise~temp_trt, type = "response"))
+cld(emmeans(delta_lm, pairwise~co2_trt, type = "response"))
+cld(emmeans(delta_lm, pairwise~temp_trt*co2_trt, type = "response"))
+cld(emmeans(delta_lm, pairwise~temp_trt*species, type = "response"))
+cld(emmeans(delta_lm, pairwise~co2_trt*temp_trt*species, type = "response"))
 
 
 
@@ -731,7 +773,7 @@ ggplot(df, aes(x = marea * nmass, y = narea)) +
   geom_abline(slope = 1, intercept = 0, color = "red", linetype = "dashed", size = 1) +
   labs(x = expression(M[a] ~ "×" ~ N[m]),
        y = expression(N[a]),
-       title = "Check for 1:1 Relationship") +
+       title = "1:1 Relationship") +
   theme_minimal(base_size = 14)
 
 
