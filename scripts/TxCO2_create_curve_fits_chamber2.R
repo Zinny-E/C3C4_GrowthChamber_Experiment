@@ -56,7 +56,7 @@ aci.prep <- chamber2  %>%
   group_by(id) %>%
   mutate(keep.row = "yes") %>%
   mutate(id = case_when(
-    temp.setpoint >= 27.5 ~ paste0(id, "_27.5"), #addinf _27.5 to the id's that were measured at 27.5
+    temp.setpoint >= 27.5 ~ paste0(id, "_27.5"), #adding _27.5 to the id's that were measured at 27.5
     TRUE ~ as.character(id)
   )) %>%
   data.frame()
@@ -656,5 +656,13 @@ chamber2_aci.coefs[44,] <- c(id = "poa_pra8_t4_ch2_27.5", pathway = "C3",t(coef(
 ##write aci_coefs data
 write.csv(chamber2_aci.coefs, "~/git/C3C4_GrowthChamber_Experiment/TxCO2_licorcleaned/TxCO2combinedataset/aci.coefs.c3_chamber2.csv", 
           row.names = FALSE)
+
+
+
+
+
+
+
+
 
 

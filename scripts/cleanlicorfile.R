@@ -178,7 +178,7 @@ clean_licor_files <- function(directory_path,
   }
 } 
 
-#c;eaning co2 response data
+#cleaning co2 response data
 #chamber 2
 clean_licor_files('~/git/C3C4_GrowthChamber_Experiment/TxCO2_licorraw/chamber_2_co2rep',
                '~/git/C3C4_GrowthChamber_Experiment/TxCO2_licorcleaned/chamber_2_co2rep')
