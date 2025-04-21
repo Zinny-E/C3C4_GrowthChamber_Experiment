@@ -87,3 +87,12 @@ df <- df %>%
     ci.ca = coalesce(ci.ca.x, ci.ca.y)
   ) %>%
   dplyr::select(-matches("\\.x$"), -matches("\\.y$"))
+
+
+
+
+
+
+
+
+

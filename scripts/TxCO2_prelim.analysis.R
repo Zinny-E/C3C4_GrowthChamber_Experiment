@@ -14,7 +14,7 @@ library(multcompView)
 emm_options(opt.digits = FALSE)
 
 ############Load complied datasheet
-df <- read.csv("~/git/C3C4_GrowthChamber_Experiment/TXCO2.clean_complied_data.csv", 
+df <- read.csv("C:/Users/NickAdmin/OneDrive - Texas Tech University/git/C3C4_GrowthChamber_Experiment/TxCO2_fulldataset.csv", 
                na.strings = "NA")
 
 
@@ -44,6 +44,26 @@ df$vcmaxGT[df$temp_trt == 'LT'] <- df$vcmax20[df$temp_trt == 'LT']
 df$jmaxGT <- NA
 df$jmaxGT[df$temp_trt == 'HT'] <- df$jmax35[df$temp_trt == 'HT']
 df$jmaxGT[df$temp_trt == 'LT'] <- df$jmax20[df$temp_trt == 'LT']
+
+###########################################
+##anet420
+#############################################
+df$anet420 <- NA
+df$anet1000 <- NA
+df$anet420[df$co2_trt == 'AC'] <- df$anet_growth[df$co2_trt == 'AC']
+df$anet1000[df$co2_trt == 'EC'] <- df$anet_growth[df$co2_trt == 'EC']
+
+
+#################################jmax27.5/vcmax27.5
+df <- df %>%
+  mutate(jmax_vcmax = as.numeric(jmax27.5) / as.numeric(vcmax27.5))
+
+
+
+#################################jmax27.5/vcmax27.5
+df <- df %>%
+  mutate(amax_vpmax = as.numeric(amaxLA27.5) / as.numeric(vpmaxLA27.5))
+
 
 
 #df.long <- pivot_longer(df,cols = c("vcmax20", "vcmax27.5", "vcmax35"),
@@ -75,6 +95,7 @@ outlierTest(vcmaxCT_lm)
 Anova(vcmaxCT_lm)
 summary(vcmaxCT_lm)
 r.squaredGLMM(vcmaxCT_lm)
+
 ###########Individual effects#########################
 emmeans(vcmaxCT_lm, ~species)
 emmeans(vcmaxCT_lm, ~co2_trt)
@@ -86,15 +107,14 @@ emmeans(vcmaxCT_lm, ~co2_trt*temp_trt)
 
 
 ############Post-hoc tests
-cld(emmeans(vcmaxCT_lm, pairwise~temp_trt, type = "response"))
-cld(emmeans(vcmaxCT_lm, pairwise~co2_trt, type = "response"))
-cld(emmeans(vcmaxCT_lm, pairwise~co2_trt*temp_trt*species, type = "response"))
-cld(emmeans(vcmaxCT_lm, pairwise~temp_trt*species, type = "response"))
+cld(emmeans(vcmaxCT_lm, pairwise~species))
+cld(emmeans(vcmaxCT_lm, pairwise~temp_trt))
+cld(emmeans(vcmaxCT_lm, pairwise~co2_trt))
+cld(emmeans(vcmaxCT_lm, pairwise~temp_trt*co2_trt*species))
 
 
 
-
-############################################################
+.############################################################
 ################jmax27.5(jmaxCT)##################
 ###########################################################
 df$jmax27.5 <- as.numeric(df$jmax27.5)
@@ -124,15 +144,16 @@ coef(jmaxCT_lm)
 emmeans(jmaxCT_lm, ~species)
 emmeans(jmaxCT_lm, pairwise~co2_trt, type = "response")
 emmeans(jmaxCT_lm, pairwise~temp_trt, type = "response")
-emmeans(jmaxCT_lm, pairwise~temp_trt*co2_trt, type = "response")
-emmeans(jmaxCT_lm, ~temp_trt*co2_trt)
+emmeans(jmaxCT_lm, pairwise~temp_trt*co2_trt*species, type = "response")
+emmeans(jmaxCT_lm, ~temp_trt*species, type = "response")
 #test(emtrends(vpmaxLAGT_lm, ~1, "growth_temp"))
 
 ############Post-hoc tests
-cld(emmeans(jmaxCT_lm, pairwise~co2_trt*temp_trt, type = "response"))
+cld(emmeans(jmaxCT_lm, pairwise~co2_trt, type = "response"))
+cld(emmeans(jmaxCT_lm, pairwise~temp_trt, type = "response"))
 cld(emmeans(jmaxCT_lm, pairwise~temp_trt*species, type = "response"))
-cld(emmeans(jmaxCT_lm, pairwise~co2_trt*temp_trt, type = "response"))
-cld(emmeans(jmaxCT_lm, pairwise~temp_trt*species, type = "response"))
+cld(emmeans(jmaxCT_lm, pairwise~co2_trt*temp_trt*species, type = "response"))
+
 
 
 ############################################################
@@ -170,7 +191,7 @@ emmeans(vcmaxGT_lm, ~temp_trt*co2_trt)
 cld(emmeans(vcmaxGT_lm, pairwise~co2_trt*temp_trt, type = "response"))
 cld(emmeans(vcmaxGT_lm, pairwise~temp_trt, type = "response"))
 cld(emmeans(vcmaxGT_lm, pairwise~co2_trt, type = "response"))
-cld(emmeans(vcmaxGT_lm, pairwise~temp_trt*species, type = "response"))
+cld(emmeans(vcmaxGT_lm, pairwise~co2_trt*temp_trt*species, type = "response"))
 
 
 
@@ -204,8 +225,8 @@ emmeans(jmaxGT_lm, ~temp_trt*co2_trt)
 
 
 ############Post-hoc tests
-cld(emmeans(jmaxGT_lm, pairwise~co2_trt*temp_trt, type = "response"))
 cld(emmeans(jmaxGT_lm, pairwise~temp_trt, type = "response"))
+cld(emmeans(jmaxGT_lm, pairwise~temp_trt*species, type = "response"))
 cld(emmeans(jmaxGT_lm, pairwise~species, type = "response"))
 
 
@@ -241,7 +262,7 @@ emmeans(vpmaxLACT_lm, ~co2_trt*temp_trt, type = "response")
 
 
 # Post-hoc tests
-cld(emmeans(vpmaxLACT_lm, pairwise~co2_trt*temp_trt, type = "response"))
+cld(emmeans(vpmaxLACT_lm, pairwise~co2_trt*temp_trt*species, type = "response"))
 cld(emmeans(vpmaxLACT_lm, pairwise~temp_trt, type = "response"))
 
 
@@ -276,9 +297,9 @@ emmeans(amaxLACT_lm, ~temp_trt)
 
 
 # Post-hoc tests
-cld(emmeans(amaxLACT_lm, pairwise~co2_trt*temp_trt, type = "response"))
+cld(emmeans(amaxLACT_lm, pairwise~species, type = "response"))
 cld(emmeans(amaxLACT_lm, pairwise~temp_trt, type = "response"))
-
+cld(emmeans(amaxLACT_lm, pairwise~co2_trt*temp_trt, type = "response"))
 
 
 
@@ -287,7 +308,7 @@ cld(emmeans(amaxLACT_lm, pairwise~temp_trt, type = "response"))
 
 #####################################################
 ##########vpmaxGT#######################
-vpmaxLAGT_lm <- lm(vpmaxLAGT ~ co2_trt*temp_trt*species, 
+vpmaxLAGT_lm <- lm(log(vpmaxLAGT) ~ co2_trt*temp_trt*species, 
                    data = subset(df, ps_pathway  ==  "C4"),
                    na.action = na.exclude)
 
@@ -318,7 +339,7 @@ emmeans(vpmaxLAGT_lm, ~co2_trt*species)
 # Post-hoc tests
 cld(emmeans(vpmaxLAGT_lm, pairwise~co2_trt*temp_trt, type = "response"))
 cld(emmeans(vpmaxLAGT_lm, pairwise~co2_trt*species, type = "response"))
-
+cld(emmeans(vpmaxLAGT_lm, pairwise~co2_trt, type = "response"))
 
 
 
@@ -356,11 +377,521 @@ emmeans(amaxLAGT_lm, ~temp_trt*co2_trt)
 
 
 # Post-hoc tests
-cld(emmeans(amaxLAGT_lm, pairwise~co2_trt*temp_trt, type = "response"))
+cld(emmeans(amaxLAGT_lm, pairwise~temp_trt, type = "response"))
 cld(emmeans(amaxLAGT_lm, pairwise~co2_trt*species, type = "response"))
 
-contrast(emmeans(amaxLAGT_lm, ~co2_trt*temp_trt, type = "response"), 
-         simple =  "each", combine = TRUE )
+
+ #drop the neg
+
+df <- subset(df, !(id == "bou_cur15_t4_ch3" & anet_growth == -0.7564690))
+
+
+#####################################################
+##########Anetgrowth#######################
+anetgrowth_lm <- lm(anet_growth ~ co2_trt*temp_trt*species, 
+                     data = df,
+                     na.action = na.exclude)
+
+
+
+# Check model assumptions
+plot(resid(anetgrowth_lm) ~ fitted(anetgrowth_lm))
+qqnorm(residuals(anetgrowth_lm))
+qqline(residuals(anetgrowth_lm))
+hist(residuals(anetgrowth_lm))
+shapiro.test(residuals(anetgrowth_lm))
+outlierTest(anetgrowth_lm)
+
+######################model results
+Anova(anetgrowth_lm)
+summary(anetgrowth_lm)
+
+###########Individual effects#########################
+emmeans(anetgrowth_lm, ~species)
+emmeans(anetgrowth_lm, ~temp_trt)
+emmeans(anetgrowth_lm, pairwise~co2_trt)
+emmeans(anetgrowth_lm, pairwise~temp_trt)
+emmeans(anetgrowth_lm, ~temp_trt*co2_trt)
+
+
+# Post-hoc tests
+cld(emmeans(anetgrowth_lm, pairwise~species))
+cld(emmeans(anetgrowth_lm, pairwise~temp_trt))
+cld(emmeans(anetgrowth_lm, pairwise~co2_trt))
+cld(emmeans(anetgrowth_lm, pairwise~temp_trt*co2_trt))
+cld(emmeans(anetgrowth_lm, pairwise~temp_trt*species))
+cld(emmeans(anetgrowth_lm, pairwise~co2_trt*species))
+cld(emmeans(anetgrowth_lm, pairwise~co2_trt*temp_trt*species))
+
+hist(df$marea)
+
+#####################################################
+##########gsw#######################
+gsw_lm <- lm(log(gsw) ~ co2_trt*temp_trt*species, 
+                    data = df,
+                    na.action = na.exclude)
+
+
+
+# Check model assumptions
+plot(resid(gsw_lm) ~ fitted(gsw_lm))
+qqnorm(residuals(gsw_lm))
+qqline(residuals(gsw_lm))
+hist(residuals(gsw_lm))
+shapiro.test(residuals(gsw_lm))
+outlierTest(gsw_lm)
+
+######################model results
+Anova(gsw_lm)
+summary(gsw_lm)
+
+###########Individual effects#########################
+emmeans(gsw_lm, ~species)
+emmeans(gsw_lm, ~temp_trt)
+emmeans(gsw_lm, pairwise~co2_trt)
+emmeans(gsw_lm, pairwise~temp_trt)
+emmeans(gsw_lm, ~temp_trt*co2_trt)
+
+
+# Post-hoc tests
+cld(emmeans(gsw_lm, pairwise~temp_trt, type = "response"))
+cld(emmeans(gsw_lm, pairwise~co2_trt, type = "response"))
+cld(emmeans(gsw_lm, pairwise~temp_trt*co2_trt, type = "response"))
+cld(emmeans(gsw_lm, pairwise~temp_trt*species, type = "response"))
+cld(emmeans(gsw_lm, pairwise~co2_trt*temp_trt*species, type = "response"))
+
+
+
+
+
+
+
+############################################################
+#####chi
+
+
+
+
+
+
+
+
+
+
+
+############################################################
+#####Nmass
+nmass_lm <- lm(log(nmass) ~ co2_trt*temp_trt*species, 
+             data = df,
+             na.action = na.exclude)
+
+
+
+# Check model assumptions
+plot(resid(nmass_lm) ~ fitted(nmass_lm))
+qqnorm(residuals(nmass_lm))
+qqline(residuals(nmass_lm))
+hist(residuals(nmass_lm))
+shapiro.test(residuals(nmass_lm))
+outlierTest(nmass_lm)
+
+######################model results
+Anova(nmass_lm)
+summary(nmass_lm)
+
+###########Individual effects#########################
+emmeans(nmass_lm, ~species)
+emmeans(nmass_lm, ~temp_trt)
+emmeans(nmass_lm, pairwise~co2_trt)
+emmeans(nmass_lm, pairwise~temp_trt)
+emmeans(nmass_lm, ~temp_trt*co2_trt)
+
+
+# Post-hoc tests
+cld(emmeans(nmass_lm, pairwise~species, type = "response"))
+cld(emmeans(nmass_lm, pairwise~co2_trt, type = "response"))
+cld(emmeans(nmass_lm, pairwise~temp_trt, type = "response"))
+cld(emmeans(nmass_lm, pairwise~temp_trt*co2_trt, type = "response"))
+cld(emmeans(nmass_lm, pairwise~temp_trt*species, type = "response"))
+cld(emmeans(nmass_lm, pairwise~co2_trt*species, type = "response"))
+
+
+
+############################################################
+#####biomass
+biomass_lm <- lm(log(biomass.g.) ~ co2_trt*temp_trt*species, 
+               data = df,
+               na.action = na.exclude)
+
+
+
+# Check model assumptions
+plot(resid(biomass_lm) ~ fitted(biomass_lm))
+qqnorm(residuals(biomass_lm))
+qqline(residuals(biomass_lm))
+hist(residuals(biomass_lm))
+shapiro.test(residuals(biomass_lm))
+outlierTest(biomass_lm)
+
+######################model results
+Anova(biomass_lm)
+summary(nmass_lm)
+
+###########Individual effects#########################
+emmeans(nmass_lm, ~species)
+emmeans(nmass_lm, ~temp_trt)
+emmeans(nmass_lm, pairwise~co2_trt)
+emmeans(nmass_lm, pairwise~temp_trt)
+emmeans(nmass_lm, ~temp_trt*co2_trt)
+
+
+# Post-hoc tests
+cld(emmeans(biomass_lm, pairwise~temp_trt, type = "response"))
+cld(emmeans(biomass_lm, pairwise~co2_trt, type = "response"))
+cld(emmeans(biomass_lm, pairwise~temp_trt*co2_trt, type = "response"))
+cld(emmeans(biomass_lm, pairwise~temp_trt*species, type = "response"))
+cld(emmeans(biomass_lm, pairwise~co2_trt*species, type = "response"))
+
+
+
+
+
+############################################################
+#####Narea
+narea_lm <- lm(log(narea) ~ co2_trt*temp_trt*species, 
+               data = df,
+               na.action = na.exclude)
+
+
+
+# Check model assumptions
+plot(resid(narea_lm) ~ fitted(narea_lm))
+qqnorm(residuals(narea_lm))
+qqline(residuals(narea_lm))
+hist(residuals(narea_lm))
+shapiro.test(residuals(narea_lm))
+outlierTest(narea_lm)
+
+######################model results
+Anova(narea_lm)
+summary(narea_lm)
+
+###########Individual effects#########################
+emmeans(narea_lm, ~species)
+emmeans(narea_lm, ~temp_trt)
+emmeans(narea_lm, pairwise~co2_trt)
+emmeans(narea_lm, pairwise~temp_trt)
+emmeans(narea_lm, ~temp_trt*co2_trt)
+
+
+# Post-hoc tests
+cld(emmeans(narea_lm, pairwise~temp_trt, type = "response"))
+cld(emmeans(narea_lm, pairwise~co2_trt, type = "response"))
+cld(emmeans(narea_lm, pairwise~co2_trt*temp_trt, type = "response"))
+cld(emmeans(narea_lm, pairwise~temp_trt*species, type = "response"))
+cld(emmeans(narea_lm, pairwise~co2_trt*species, type = "response"))
+
+
+
+
+
+
+
+############################################################
+#####marea
+marea_lm <- lm(log(marea) ~ co2_trt*temp_trt*species, 
+               data = df,
+               na.action = na.exclude)
+
+
+
+# Check model assumptions
+plot(resid(marea_lm) ~ fitted(marea_lm))
+qqnorm(residuals(marea_lm))
+qqline(residuals(marea_lm))
+hist(residuals(marea_lm))
+shapiro.test(residuals(marea_lm))
+outlierTest(marea_lm)
+
+######################model results
+Anova(marea_lm)
+summary(marea_lm)
+
+###########Individual effects#########################
+emmeans(marea_lm, ~species)
+emmeans(marea_lm, ~temp_trt)
+emmeans(marea_lm, pairwise~co2_trt)
+emmeans(marea_lm, pairwise~temp_trt)
+emmeans(marea_lm, ~temp_trt*co2_trt)
+
+
+# Post-hoc tests
+cld(emmeans(marea_lm, pairwise~temp_trt, type = "response"))
+cld(emmeans(marea_lm, pairwise~co2_trt, type = "response"))
+cld(emmeans(marea_lm, pairwise~temp_trt*co2_trt, type = "response"))
+cld(emmeans(marea_lm, pairwise~temp_trt*species, type = "response"))
+cld(emmeans(marea_lm, pairwise~co2_trt*species, type = "response"))
+
+
+
+
+
+############################################################
+#####jmaxvcmax_ratio
+jmaxvcmax_lm <- lm(log(jmax_vcmax) ~ co2_trt*temp_trt*species, 
+                   data = subset(df, ps_pathway  ==  "C3"),
+               na.action = na.exclude)
+
+
+
+# Check model assumptions
+plot(resid(jmaxvcmax_lm) ~ fitted(jmaxvcmax_lm))
+qqnorm(residuals(jmaxvcmax_lm))
+qqline(residuals(jmaxvcmax_lm))
+hist(residuals(jmaxvcmax_lm))
+shapiro.test(residuals(jmaxvcmax_lm))
+outlierTest(jmaxvcmax_lm)
+
+######################model results
+Anova(jmaxvcmax_lm)
+summary(jmaxvcmax_lm)
+
+###########Individual effects#########################
+emmeans(jmaxvcmax_lm, ~species)
+emmeans(jmaxvcmax_lm, ~temp_trt)
+emmeans(jmaxvcmax_lm, pairwise~co2_trt)
+emmeans(jmaxvcmax_lm, pairwise~temp_trt)
+emmeans(jmaxvcmax_lm, ~temp_trt*co2_trt)
+
+
+# Post-hoc tests
+cld(emmeans(jmaxvcmax_lm, pairwise~temp_trt, type = "response"))
+cld(emmeans(jmaxvcmax_lm, pairwise~co2_trt, type = "response"))
+cld(emmeans(jmaxvcmax_lm, pairwise~temp_trt*co2_trt, type = "response"))
+cld(emmeans(jmaxvcmax_lm, pairwise~temp_trt*species, type = "response"))
+cld(emmeans(jmaxvcmax_lm, pairwise~co2_trt*temp_trt*species, type = "response"))
+
+
+
+
+
+############################################################
+#####amaxvpmax_ratio
+amaxvpmax_lm <- lm(log(amax_vpmax) ~ co2_trt*temp_trt*species, 
+                   data = subset(df, ps_pathway  ==  "C4"),
+                   na.action = na.exclude)
+
+
+
+# Check model assumptions
+plot(resid(amaxvpmax_lm) ~ fitted(amaxvpmax_lm))
+qqnorm(residuals(jmaxvcmax_lm))
+qqline(residuals(jmaxvcmax_lm))
+hist(residuals(jmaxvcmax_lm))
+shapiro.test(residuals(jmaxvcmax_lm))
+outlierTest(jmaxvcmax_lm)
+
+######################model results
+Anova(amaxvpmax_lm)
+summary(jmaxvcmax_lm)
+
+###########Individual effects#########################
+emmeans(jmaxvcmax_lm, ~species)
+emmeans(jmaxvcmax_lm, ~temp_trt)
+emmeans(jmaxvcmax_lm, pairwise~co2_trt)
+emmeans(jmaxvcmax_lm, pairwise~temp_trt)
+emmeans(jmaxvcmax_lm, ~temp_trt*co2_trt)
+
+
+# Post-hoc tests
+cld(emmeans(amaxvpmax_lm, pairwise~temp_trt, type = "response"))
+cld(emmeans(jmaxvcmax_lm, pairwise~co2_trt, type = "response"))
+cld(emmeans(jmaxvcmax_lm, pairwise~temp_trt*co2_trt, type = "response"))
+cld(emmeans(amaxvpmax_lm, pairwise~temp_trt*species, type = "response"))
+cld(emmeans(jmaxvcmax_lm, pairwise~co2_trt*temp_trt*species, type = "response"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ggplot(df, aes(x = marea * nmass, y = narea)) +
+  geom_point(alpha = 0.6, color = "steelblue", size = 2) +
+  geom_abline(slope = 1, intercept = 0, color = "red", linetype = "dashed", size = 1) +
+  labs(x = expression(M[a] ~ "×" ~ N[m]),
+       y = expression(N[a]),
+       title = "Check for 1:1 Relationship") +
+  theme_minimal(base_size = 14)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
